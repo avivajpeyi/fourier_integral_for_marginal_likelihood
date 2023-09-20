@@ -322,6 +322,11 @@ and so on. Consequently, if $p$ is infinitely differentiable and integrable, the
 
 On the other hand, for a kernel density estimator (KDE) with bandwidth $h$, the bias will be of order $h^2$, and the variance will be of order $\frac{1}{nh}$. Consider the limiting constant $R$ as the `inverse bandwidth parameter'; that is, $R = \frac{1}{h}$. Then we can see that KDE has the same variance as FI, which is $\frac{R}{n}$. However, the bias of FI can be much smaller than that of KDE ($\frac{1}{R^2}$) when the target density is Gaussian-like, as discussed in \cite{rotiroti2022computing}.
 
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \subsection{\label{subsec:transformation of parameter space} Transformation of parameter space}
 As defined by equation \eqref{eqn: fourier transform}, Fourier transform requires the function $p$ being transformed to be $f \in \mathcal{C}(\R)$; otherwise, the integrand in the integral of equation \eqref{eqn: fourier transform} is undefined at some parts to be integrated, or that there needs to be indicator functions and Dirac delta functions to take care of the discontinuity. When $p$ is the probability density of a distribution, such a function domain requirement means that the indicator function of the density support needs to be specified within $p$. When the support of $p$ is only part of the real space, it is usually discontinuous at the boundary of its support. This makes $p$ fail to meet the assumption at the beginning of section 3 in \cite{rotiroti2022computing}, hence making the bias and variance calculation in their section 3.2 not necessarily true.
 
