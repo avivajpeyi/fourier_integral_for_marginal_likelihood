@@ -24,7 +24,7 @@
 %groupedaddress,
 %unsortedaddress,
 %runinaddress,
-%frontmatterverbose, 
+%frontmatterverbose,
 %preprint,
 %preprintnumbers,
 %nofootinbib,
@@ -51,7 +51,7 @@
 %\usepackage[mathlines]{lineno}% Enable numbering of text and display math
 %\linenumbers\relax % Commence numbering lines
 
-%\usepackage[showframe,%Uncomment any one of the following lines to test 
+%\usepackage[showframe,%Uncomment any one of the following lines to test
 %%scale=0.7, marginratio={1:1, 2:3}, ignoreall,% default settings
 %%text={7in,10in},centering,
 %%margin=1.5in,
@@ -132,35 +132,6 @@ $^3$ Universiteit Antwerpen, \\Prinstraat 13, 2000 Antwerpen, Belgium}
 \newcommand{\citeme}{\textcolor{purple}{(cite)}}
 
 
-%\author{Jason Li}
-%\affiliation{Department of Statistics, The University of Auckland}
-% \altaffiliation[Also at ]{Physics Department, XYZ University.}%Lines break automatically or can be forced with \\
-%\author{Patricio Maturana-Russel}%
-% \email{Second.Author@institution.edu}
-%\affiliation{%
-% Authors' institution and/or address\\
-% This line break forced with \textbackslash\textbackslash
-%}%
-
-%\collaboration{MUSO Collaboration}%\noaffiliation
-
-%\author{Renate Meyer}
- %\homepage{http://www.Second.institution.edu/~Charlie.Autho%r}
-%\affiliation{
-% Second institution and/or address\\
-% This line break forced% with \\
-%}%
-%\affiliation{
-% Third institution, the second for Charlie Author
-%}%
-%\author{Avi Vajpeyi}
-%\affiliation{%
-% Authors' institution and/or address\\
-% This line break forced with \textbackslash\textbackslash
-%}%
-%\author{Guillaume Boileau}
-
-%\collaboration{CLEO Collaboration}%\noaffiliation
 
 \date{\today}% It is always \today, today,
              %  but any date may be explicitly specified
@@ -176,54 +147,65 @@ Abstract: a super fast method
 %\tableofcontents
 
 \section{\label{sec:introduction} Introduction}
+On September 14, 2015, the Laser Interferometer Gravitational-Wave Observatory (LIGO) directly detected gravitational waves for the very first time. These waves were emitted by the inspiral and merger of two solar mass black holes. For this spectacular discovery, the founders of LIGO, Barry Barish, Kip Thorne and Rainer Weiss were awarded the Nobel Prize in Physics in 2017.  Since then, the collaborations of the American LIGO detectors and the European Virgo detector have announced a total of 90 detections of gravitational waves (GWs) emitted by merging compact objects. LIGO, Virgo, and the Japanese KAGRA detector started another observation run in May 2023, which will last for 18 months and observe in the 20Hz to 2 kHz frequency range. The GWs observed to date stem from the mergers of solar-mass binary black holes and/or neutron stars but GWs from core-collapse supernovae and rapidly rotating neutron stars are potential sources that emit GWs in the frequency band of LIGO/Virgo/KAGRA (LVK).
+Further ground-based interferometers with increased sensitivity, the Einstein Telescope in Europe and Cosmic Explorer in the US, are in the planning stages and should start observing in the mid 2030s. The Laser Interferometer Space Antenna or short LISA, a space mission led by the European Space Agency with support from NASA, and the Chinese space mission Tianji will observe in the mHz band from 2035 and will be sensitive to emissions from supermassive black holes, massive compact objects orbiting a supermassive black hole and the stochastic gravitational wave background from physical processes in the very early Universe.
 
-\pmr{EDIT THIS}
+To fully exploit the current and future observations and derive important information about the physics of the emitting sources, state-of-the-art statistical inference techniques are essential. To claim a detection with confidence requires a careful consideration of the evidence of the model with gravitational wave signal present as compared to a model with just instrumental noise. Furthermore, the observations of gravitational waves by terrestrial detectors now and by future space-based detectors present possibilities to put general relativity to the test. These require a methodology for statistical hypothesis tests or model comparison, e.g.\ testing the null hypothesis ``$H_0: M_0\mbox{ holds}$" against the alternative ``$H_1: M_1 \mbox{ holds}$".  Using a frequentist approach, hypothesis testing is done by
+choosing a test statistic and calculating the so-called
+p-value, the probability to reject the null hypothesis even if $M_0$ is true, see e.g.\ \cite{alma9998701914002091}. The p-value is usually regarded as an {\em indirect} measure of
+the evidence against a null hypothesis (in favour of $M_1$) and often compared to the significance level of 5\%, i.e., if the p-value is larger
+than 0.05, there is deemed to be insufficient evidence against the null hypothesis. However, the p-value cannot be interpreted (as often falsely done) as the probability that the null hypothesis is true. The p-value does not have this {\em direct} interpretation as a measure of evidence. This is only possible using a Bayesian approach by calculating the {\em evidence} for each model (insert citation), i.e., the marginal likelihood of the data $\ybold$ under model $M_i$, \[Z(M_i)=\pi(\ybold|M_i)=\int \pi(\btheta
+_i|M_i)L(\ybold|\btheta_i,M_i)d\btheta_i.\]
+This is the prior-weighted average of the likelihood of the data $\ybold$ given all potential parameter values $\btheta_i$ of Model $M_i$.
+If the Bayes factor, defined as the ratio of the evidences,
+\[ B_{01}=\frac{\pi(\ybold|M_0)}{\pi(\ybold|M_1)},\]
+is larger than 1, this provides evidence in favour of $M_0$. Since $\pi(\ybold|M_i)=\pi(M_i|\ybold)\pi(M_i)$,
+the Bayes factor can also be interpreted as the ratio of the posterior odds for model $M_0$, $\pi(\ybold|M_0)$, to the prior odds, $\pi(M_0)$.
 
-\pmr{ (Abbott et al. 2016).  Since then, multiple GWs have been detected (references) through a network of ground-based detectors, such as LIGO and VIRGO.  } 
+However, apart from conjugate and low-dimensional cases, it is notoriously difficult to compute the marginal likelihood since it requires the solution of a high-dimensional integration problem.
 
-\pmr{Bayesian statistical inference has played a key role in parameter estimation and model selection and is currently the most widely adopted framework of inferences gravitational wave analysis \cite{christensen1998markov} (add more references).  It is also expected to play a crucial role in LISA data analysis.  Parameter estimation is usually carried out through MCMC methods (add references), whereas model selection through Bayes factors.}
+A comprehensive overview of computational techniques for computing the marginal likelihood can be found in
+\cite{RobertCP2009CmfB, GelmanAndrew2014, ChristensenNelson2022Pewg}.
+Currently, the most widely-accepted methods for computing marginal likelihoods for gravitational wave data are nested sampling (NS) \cite{skilling2006nested, veitch2010bayesian}, thermodynamic integration (TI) \cite{gelman1998simulating, lartillot2006computing} and stepping-stone algorithm (SS) \cite{xie2011improving, maturana2019stepping}. These algorithms have been and are currently routinely used for LVK data analysis. All these use Monte Carlo samples from each model to estimate the evidence. A different approach is the transdimensional reversible jump Markov chain Monte Carlo method \cite{green1995reversible, umstatter2005bayesian} that explores the joint space of all models at once, and ratios of marginal likelihoods can be computed based on the proportions of the number of iterations that the algorithm stays in each model.
+To circumvent the highdimensional integration, information criteria are often used for model comparison.
+Under certain regularity conditions, an approximation to $-2\log Z$ is given by the frequentist Bayesian information criterion (BIC), defined as $\mbox{BIC}=-2\log L(\ybold|\hat{\btheta}) +p\log n$,
+where $\hat{\btheta}$ denotes the maximum likelihood estimate, $p$ the number of parameters, and $n$ the sample size. This combines a measure of fit, the deviance $D(\btheta)= -2\log L(\ybold|\btheta)$ evaluated at the maximum likelihood estimate, with a penalty term for model complexity. A Bayesian version, the deviance information criterion (DIC, \cite{spiegelhalter2002bayesian}) uses
+\[\mbox{DIC}=\bar{D}(\btheta) +p_D \]
+with the posterior mean of the deviance $\bar{D}(\btheta)$  as the measure of fit and $p_D=\bar{D}(\theta)-D(\bar{\btheta})$ as the penalty term, where $\bar{\btheta}$ is the posterior mean of $\btheta$. The main advantages of using the DIC for model comparison is that it is easy to compute when a sample of the posterior distribution is available and that it can be used even if improper priors are specified. In contrast, Bayes factors cannot be interpreted if improper priors are used.
 
 
-It was not until almost 100 years after Einstein in 1916 predicted the existence of gravitational waves (GWs) that the first direct detection from a binary
-black hole merger was confirmed by the Laser Interferometer Gravitational-Wave Observatory (LIGO) \cite{abbott2016observation}. Since then, multiple GWs have been detected (references) through a network of ground-based detectors, comprising the LIGO, Virgo, and Kamioka Gravitational Wave (KAGRA) interferometers. However, ground-based detectors have short (3-4km) arm lengths and limited sensitivities at low frequencies due to environmental noise. The Laser Interferometer Space Antenna (LISA) (\cite{danzmann2000lisa}) mission, led by the European Space Agency in collaboration with NASA with the goal to put a gravitational wave detector into space by 2035, will give access to a lower frequency range of gravitational wave signals. LISA's arms will extend over 2.5 million kilometers. As stated in \cite{boileau2023prospects}, LISA will receive signals from various astronomical and cosmological sources such as the inspirals of stellar-mass binaries, mergers of supermassive black holes, the capture of a stellar-mass black hole by a supermassive black hole, and gravitational waves from physical processes in the very early Universe. 
+Here we propose the use of the Fourier integral method (FI) for computing the evidence of  gravitational wave models, as introduced by \cite{rotiroti2022computing}. It falls in the same category as nested sampling, the TI and SS algorithms in that no trans-dimensional moves are made nor information criteria used.
+We aim to assess the accuracy and computational effort of the FI method in relation to these currently utilized techniques for computing the Bayes factor. This evaluation specifically focuses on LVK observations, with the goal of determining the evidence supporting the existence of a gravitational wave signal originating from a binary coalescence in LVK measurements.
+The DIC has been employed in prior studies to assess gravitational wave models with and without phase transition in the context of the stochastic gravitational wave background (SGWB) based on simulated LISA observations \cite{BoileauGuillaume2023PfLt}. To demonstrate the comparative effectiveness of model comparison using the FI method in contrast to the DIC, we examine identical simulated data as presented in \cite{BoileauGuillaume2023PfLt}.
+
+Computing the evidence through the Fourier integral method differs from methods like parallel tempered techniques (TI or SS) or sampling from progressively restricted parameter spaces like NS. The process does not necessitate these complexities. As long as there is knowledge of the prior and likelihood, along with a sample from the posterior distribution obtained, for instance, through a Metropolis-Hastings algorithm, implementing the Fourier integral method is notably straightforward and convenient. As far as the computation time is concerned,  the Fourier integral method is much faster than NS, TI and SS.  It is even  surpasses the computational speed of calculating the DIC. {\em What about accuracy?} As a consequence,
+FI provides an accurate and fast alternative to current techniques and even compares favourably in terms of computation time to the calculation of information criteria.
+
+The paper is structured as follows.... (delete the rest)
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+Gravitational wave (GW) detection is a recent field in observational-based astronomy, which are waves of the gravitational field generated by perturbations of large masses in the universe. Ground-based detectors of gravitational waves include Laser Interferometer Gravitational-Wave Observatory (LIGO), Virgo interferometer and Kamioka Gravitational Wave Detector (KAGRA). However, GWs are detected by changes in distances between two points in the space-time, where such changes have tiny magnitudes on Earth. As a result, the LIGO-Virgo-KAGRA collaboration (LVK) is essential to increase the sensitivity and confidence of any GW signal detection.
+
+Ground-based detectors can be spacious and prone to false signals due to human activities on the ground. The Laser Interferometer Space Antenna (LISA) will be a GW detector that will be sent into space, making it have high sensitivity to the millihertz GW frequency range. As stated in \cite{boileau2023prospects}, LISA will receive signals from various astronomical and cosmological sources.
 %{\em Remark: Add general intro to LVK and LISA.}
 
-Bayesian inference is currently the most widely adopted framework of inferences in astrophysics \cite{saha1994unfolding}, gravitational wave analysis \cite{christensen1998markov} and cosmology \cite{christensen2001bayesian, knox2001age}. 
-%When determining which model from various models under consideration  is best suited to a specific data set, methods for  Bayesian model selection become essential. Various scenarios need to be considered.
-The observations of gravitational waves by LVK now open up opportunities to test general relativity in ways that were unavailable before. Bayesian model comparison methods are important when testing alternative theories (\cite{rouder2018theories}). But Bayesian model selection techniques are also essential for determining the detection of a signal.
-In the current 
-ground-based detector network LIGO/Virgo/KAGRA (LVK), overlapping gravitational wave signals are rare. For LVK observations,  it is important to determine whether a single transient gravitational wave signal is present within instrumental noise or whether the data stream consists only of instrumental noise. Third generation gravitational wave detectors such as the Einstein Telescope (\cite{punturo2010einstein}) and the future space-based detector LISA will 
-observe a mixture of gravitational waves emitted from various sources. Bayesian model selection procedures play a critical role in deciding which, if any,  components are present. 
-%in gravitational waves detected by the ground-based detector network LIGO/Virgo/Kagra (LVK) or the future space-based detector LISA, which can be helpful in observing astronomical phenomenons that were not detected by gravitational waves. 
-%{\em Remark: Expand on the importance of model comparison for LVK/LISA. f}
+Bayesian inference is currently the most widely adopted framework of inferences in astrophysics \cite{saha1994unfolding}, gravitational wave analysis \cite{christensen1998markov} and cosmology \cite{christensen2001bayesian, knox2001age}. When deciding which model better suits one data set, it is essential to conduct Bayesian model selection. In particular, gravitational waves are detected in the form of mixtures of waves emitted from various sources. Bayesian model selection processes are crucial in deciding which components exist in gravitational waves detected by LVK and LISA, which can be helpful in observing astronomical phenomenons that were not detected by gravitational waves. {\em Remark: Expand on the importance of model comparison for LVK/LISA. f}
 
-There are various approaches to Bayesian model selection. The most fundamental approach is to compute the {\em evidence}, the marginal likelihood, of each model under consideration and to compare two models using the {\em Bayes factor}, the ratio of the marginal likelihoods. However, calculating the evidence becomes challenging when dealing with a high-dimensional parameter space, as it involves integrating the posterior kernel  across the entire parameter space.
-A computationally convenient alternative to computing the evidence is model comparison via some information criterion, e.g.\ the deviance information criterion (DIC) \cite{spiegelhalter2002bayesian} or Watanabe's information criterion (WAIC) \cite{WatanabeSumio2010AEoB}. These combine a measure of model fit and a penalty term for model complexity. Information criteria have the additional advantage over the Bayes factor that they can be used even if the prior distribution is improper, i.e., does not have a finite integral. 
+There are various approaches to Bayesian model selection. The most fundamental approach is to compute and compare the evidence, also known as the marginal likelihood, of each model under consideration. However, the evidence is the integral of the posterior kernel function over the entire parameter space, which is often hard to compute when the parameter space is of high dimension. In addition, for the evidence to be defined, it is necessary for the prior distribution to be proper. This requirement is a drawback of Bayesian model selection based on the evidence since such a requirement stops the method from being applied to models with improper priors.
+%{\em Remark: Expand a bit more: prior needs to be proper etc.}
+%{\em Remark: I would put RJMCMC under computation of evidence, not a separate method for model comparison.}
+A computationally convenient alternative to computing the evidence is model comparison via some information criterion, e.g.\ the deviance information criterion (DIC) \cite{spiegelhalter2002bayesian} that combines the model fit and complexity. {\em Expand a bit: here the focus is on evidence computation. next paragraph discusses the current computational techniques for computing the evidence. }
 
-
-%In addition, for the evidence to be defined, it is necessary for the prior distribution to be proper. This requirement is a drawback of Bayesian model selection based on the evidence since such a requirement stops the method from being applied to models with improper priors. 
-
-%{\em Remark: Expand a bit more: prior needs to be proper etc.} 
-%{\em Remark: I would put RJMCMC under computation of evidence, not a separate method for model comparison.} 
-
-%{\em Expand a bit: here the focus is on evidence computation. next paragraph discusses the current computational techniques for computing the evidence. }
-
-
-
-Currently, the most widely-used and accurate methods for computing marginal likelihoods for gravitational wave data are nested sampling (NS) \cite{skilling2006nested, veitch2010bayesian}, thermodynamic integration (TI) \cite{gelman1998simulating, lartillot2006computing} and the stepping-stone algorithm (SS) \cite{xie2011improving, maturana2019stepping}. It should be mentioned that approximate but generally less accurate methods are available: the Bayesian information criterion (BIC) \cite{StoicaP.2004Msar}, the harmonic mean estimator \cite{NewtonRaftery} and the Laplace approximation \cite{TierneyLuke1989FELA}. Also, instead of fitting each individual model and comparing their marginal likelihoods,
-another approach is the transdimensional reversible jump Markov chain Monte Carlo method \cite{green1995reversible, umstatter2005bayesian}. It explores the joint space of all models at once, and marginal likelihoods can be estimated by the proportion of time  that the algorithm stays within the parameter space of each model. The performance of these reversible jump algorithms depends crucially on the choice of tuning parameters and their convergence is difficult to diagnose \cite{Somo2020CTfT}.
-
-Here we focus on calculating the marginal likelihood and propose the use of the novel Fourier integral method (FI) for computing the evidence of  gravitational wave models. We will show that this will provide a quick and easy to calculate alternative or additional technique to the more computationally expensive methods currently in use. 
-The FI method was introduced by \cite{rotiroti2022computing} and is based on the Fourier integral theorem. We will compare the accuracy and computational effort of the FI method to those of the currently employed techniques for the calculation of the Bayes factor when comparing different GW models.
-This will be done in a simulation study and two case studies. The first case study ascertains the evidence for the presence of a gravitational wave signal from a binary coalescence using ground-based LVK measurements. The second case study uses simulated LISA observations 
-to compare gravitational wave models with and without phase transition in the stochastic gravitational wave background (SGWB) while also taking the presence of the galactic foreground into account. For this scenario,  the DIC has previously been used to compare these models \cite{BoileauGuillaume2023PfLt}. To illustrate how model comparison via the FI compares to that of the DIC, we analyse the same simulated data as in \cite{BoileauGuillaume2023PfLt}.
+Currently, the most widely-accepted methods for computing marginal likelihoods for gravitational wave data are nested sampling (NS) \cite{skilling2006nested, veitch2010bayesian}, thermodynamic integration (TI) \cite{gelman1998simulating, lartillot2006computing} and stepping-stone algorithm (SS) \cite{xie2011improving, maturana2019stepping}. Another approach is the transdimensional reversible jump Markov chain Monte Carlo method \cite{green1995reversible, umstatter2005bayesian} that explores the joint space of all models at once, and ratios of marginal likelihoods can be computed based on the proportions of time of parameter space that the algorithm stays at. Here we propose the use of the Fourier integral method (FI) for computing the evidence of  gravitational wave models, as introduced by \cite{rotiroti2022computing}. We will compare the accuracy and computational effort of the FI method to those of the currently employed techniques for the calculation of the Bayes factor, the ratio of marginal likelihoods, to ascertain the evidence for the presence of a gravitational wave signal from a binary coalescence for LVK measurements. The DIC has previously been used to compare gravitational wave models with and without phase transition in the stochastic gravitational wave background (SGWB) for simulated LISA observations \cite{BoileauGuillaume2023PfLt}. To illustrate how model comparison via the FI compares to that of the DIC, we analyse the same simulated data as in \cite{BoileauGuillaume2023PfLt}.
 
 {\em Remark: Finish with a summary of conclusions about FI.}
 Evidence computation via the Fourier integral method only requires a good sample from the posterior distribution and the posterior kernel function to be known, and FI is also super convenient to implement. When the posterior sample size is large enough, with high accuracy, the Fourier integral method's computation time is much faster than that of NS, TI and SS, and it can also be thousands of times faster than computing the DIC. As a consequence,
 FI provides an accurate and fast alternative to current techniques and even compares favourably in terms of computation time to the calculation of information criteria.
 %with FI in use, the computation of  gravitational wave model evidence is never so fast, which can even erase the necessity of relying on DIC in some cases.
 
-The paper is structured as follows. In Sec. \ref{sec:FI derivation} we discuss the derivation and mathematical properties of the Fourier integral method. In Sec. \ref{subsec:simulation study} we compare the performance of the Fourier integral method with that of thermodynamic integration and stepping-stone algorithm in a simulation study. The performance of Fourier integral, nested sampling, thermodynamic integration, and stepping-stone are then compared with each other under LIGO merger data in Sec. \ref{subsec:LIGO}. In Sec. \ref{subsec:LISA} we apply the Fourier integral method to simulated LISA stochastic gravitational wave data and test if the conclusion is consistent with that using DIC. Finally, a summary discussion is given in Sec. \ref{sec:discussion}.
+The paper is structured as follows. In Sec. \ref{sec:FI derivation} we discuss the derivation and mathematical properties of the Fourier integral method. In Sec. \ref{sec:simulation study} we compare the performance of the Fourier integral method with that of thermodynamic integration and stepping-stone algorithm in a simulation study. The performance of Fourier integral, nested sampling, thermodynamic integration, and stepping-stone are then compared with each other under LIGO merger data in Sec. \ref{sec:LIGO}. In Sec. \ref{sec:LISA} we apply the Fourier integral method to simulated LISA stochastic gravitational wave data and test if the conclusion is consistent with that using DIC. Finally, a summary discussion is given in Sec. \ref{sec:discussion}.
 
 %{\em Remark: The paper is structured as follows...}
 
@@ -240,7 +222,7 @@ In this section, we introduce the notation and provide an explanation of the FI 
 where $\btheta=(\theta_1,\ldots,\theta_p)$ denotes the unknown parameters  that the GW strain signal $h(t|\theta)$ depends on, and $n(t)$ instrumental noise at time $t$.
 To infer the unknown $\btheta$ within the Bayesian framework, we start with a prior distribution $\pi(\btheta)$ on the $p$-dimensional parameter space $\Theta$ and update this to the posterior distribution given the observations via Bayes' theorem
 \begin{equation}\label{eq:Bayes}
-  p(\btheta|\,\d)=\mathcal{L}(\d|\,\btheta) \pi(\btheta) / \matcal{Z}(\d) 
+  p(\btheta|\,\d)=\mathcal{L}(\d|\,\btheta) \pi(\btheta) / \matcal{Z}(\d)
  \end{equation}
 where $\mathcal{L}(\d|\btheta)$ is the likelihood function, i.e.\ the joint probability density function of the data given parameter vector $\btheta$. Note that the denominator \[\matcal{Z}(\d)=\int_{\Theta} \mathcal{L}(\d|\,\btheta) \pi(\btheta) d\btheta\]
 is the {\em marginal likelihood} or {\em evidence} of the GW model. This high-dimensional integral does not have an analytic
@@ -248,7 +230,7 @@ solution, in general, and numerical methods are required
 for its calculation.
 
 We now provide the underlying  idea of the FI method for calculating the evidence. By inverting Bayes' theorem (\ref{eq:Bayes}) one obtains
-\begin{equation} \label{eq:invertedBayes}  
+\begin{equation} \label{eq:invertedBayes}
  \matcal{Z}(\d) = \frac{\mathcal{L}(\d|\,\btheta) \pi(\btheta)}{p(\btheta|\,\d)}
  \end{equation}
 which holds for any $\btheta\in \Theta$.
@@ -257,12 +239,12 @@ Provided that we have an estimate $\hat{p}$ of the posterior, e.g.\ in terms of 
 \hat{\matcal{Z}}(\d) =  \frac{\mathcal{L}(\d|\,\btheta^*) \pi(\btheta^*)}{\hat{p}(\btheta^*|\,\d)}
 \end{equation}
 assuming that we can evaluate the likelihood and prior at $\btheta^*$.
-This approach to computing the evidence was already suggested by \cite{chib1995marginal} and \cite{chib2001marginal}. Equation \eqref{eq:estimatedevidence} converts the problem of estimating the marginal likelihood, i.e., computing a multidimensional integral, into estimating the posterior density at one point in the parameter space. 
+This approach to computing the evidence was already suggested by \cite{chib1995marginal} and \cite{chib2001marginal}. Equation \eqref{eq:estimatedevidence} converts the problem of estimating the marginal likelihood, i.e., computing a multidimensional integral, into estimating the posterior density at one point in the parameter space.
 
 The remaining problem is how to evaluate the posterior density when only an un-normalised posterior kernel is known. \cite{rotiroti2022computing} proposed a simple method that uses the well-known  Fourier integral theorem \cite{pristley2005introduction}. Suppose the posterior density $p$ is continuous and is defined over the entire $\R^d$.  For parameter vectors $\bnu$
 and $\btheta$, let $\bnu \cdot \btheta=\sum_{i=1}^p \nu_i\theta_i$ denote the dot product and $\Rbold=(R_1,\ldots,R_p)$. Then the Fourier transform of the posterior $p$ is given by
 \[
- \tilde{p}(\bnu|\d)=\int_{\R^p} p(\btheta|\,\d) \e^{-i\,\bnu\cdot\btheta} d\btheta 
+ \tilde{p}(\bnu|\d)=\int_{\R^p} p(\btheta|\,\d) \e^{-i\,\bnu\cdot\btheta} d\btheta
 \]
 and the Fourier inversion formula or Fourier integral theorem yields
 \[p(\btheta^*|\,\d)= \left(\frac{1}{2\pi}\right)^p \int_{\R^P} \tilde{p}(\bnu|\d)\e^{i\,\btheta^*\cdot\bnu} d\bnu.\]
@@ -270,7 +252,7 @@ This can be expressed as the following limit:
 \begin{eqnarray*}
 p(\btheta^*|\,\d) &=& \left(\frac{1}{2\pi}\right)^p   \int_{\R^p} \left[ \int_{\R^p} p(\btheta|\,\d) \e^{-i \bnu \cdot \btheta} d\btheta\right]
  \e^{i\,\btheta^*\cdot\bnu} d\bnu\\
- &=& \left(\frac{1}{2\pi}\right)^p     \int_{\R^p}  \int_{\R^p} p(\btheta|\,\d) \e^{-i \bnu \cdot \btheta} 
+ &=& \left(\frac{1}{2\pi}\right)^p     \int_{\R^p}  \int_{\R^p} p(\btheta|\,\d) \e^{-i \bnu \cdot \btheta}
  \e^{i\btheta^*\cdot\bnu} d\bnu d\btheta\\
  &=& \left(\frac{1}{2\pi}\right)^p    \lim_{\Rbold\rightarrow \infty} \int_{\R^p}  \int_{-\Rbold}^{\Rbold} \cos\left(\bnu\cdot(\btheta^*-\btheta) \right)d\bnu p(\btheta|\d)   d\btheta\\
  &=& \frac{1}{\pi^p}   \lim_{\Rbold\rightarrow \infty} \int_{\R^p}  \prod_{j=1}^p \int_{0}^{R_j} \cos\left(\nu_j\cdot(\theta_j^*-\theta_j) \right)d\nu_j p(\btheta|\d)   d\btheta\\
@@ -283,12 +265,12 @@ Now, if we have a MCMC sample $\btheta^{(i)}$, $i=1,\ldots,n$, from the posterio
 for some fixed large $\Rbold$.
 Plugging (\ref{eq:estimatedpost}) into (\ref{eq:estimatedevidence}) yields our Monte Carlo FI evidence estimate
 \begin{equation}\label{eq:FIevidence}
- \hat{\matcal{Z}}_\text{FI}(\d) = \frac{\mathcal{L}(\d|\btheta^*) 
+ \hat{\matcal{Z}}_\text{FI}(\d) = \frac{\mathcal{L}(\d|\btheta^*)
  \pi(\btheta^*)}{\hat{p}_\text{FI}(\btheta^*|\d)}.
  \end{equation}
 For practical applications of the FI evidence estimate, several questions remain:
 \begin{enumerate}
-     \item What is its bias and variance? 
+     \item What is its bias and variance?
     \item How to choose $\btheta^*$?
     \item How to choose $\Rbold$?
     \item How to deal with a constrained parameter spaces $\Theta \subset \R^p$?
@@ -300,7 +282,7 @@ These will be addressed in the subsequent subsections.
 %
 As shown in section 3.2 of \cite{rotiroti2022computing}, in the univariate case the bias and variance of $\hat{p}_\text{FI}(\btheta^*|\,\d)$ is at most of order $1/R$ and  $R/n$, respectively. For $d$-dimensional parameter spaces with a common value $R$ for all dimensions, the bias and variance is at most of order $1/R^d$ and  $R^d/n$, respectively. Typically, the bias is much smaller than $\frac{1}{R}$ as it depends on the differentiability and integrability of the posterior. For a Gaussian density or a mixture of Gaussian densities, the bias is of order $\e^{-R^2/2}$ \cite{rotiroti2022computing}. So for posterior distributions that are well approximated by a Gaussian or mixture of Gaussian distributions, the bias is very small.
 
-The bias and variance of the FI estimator compare favourably with that of a kernel density estimator. The bandwidth $h$ of a kernel density estimator is a smoothing parameter. The bias and variance of the kernel density estimator is of order $h^2$ and $\frac{1}{nh}$, respectively, in the one-dimensional case.  With $R=1/h$ playing the role of the reciprocal of the smoothing parameter, the variance of both methods is of the same magnitude but the bias for the FI estimate is much smaller. 
+The bias and variance of the FI estimator compare favourably with that of a kernel density estimator. The bandwidth $h$ of a kernel density estimator is a smoothing parameter. The bias and variance of the kernel density estimator is of order $h^2$ and $\frac{1}{nh}$, respectively, in the one-dimensional case.  With $R=1/h$ playing the role of the reciprocal of the smoothing parameter, the variance of both methods is of the same magnitude but the bias for the FI estimate is much smaller.
 
 \subsection{\label{subsec:thetastar} Choice of $\btheta^*$}
 In theory, the expression for the evidence in equation (\ref{eq:FIevidence}) holds for any point in the parameter space. However, for practical purposes, points with high posterior density should yield more efficient estimates \cite{chib1995marginal,chib2001marginal}. We recommend choosing the sample posterior mean or median for $\btheta^*$.
@@ -315,7 +297,7 @@ In theory, the expression for the evidence in equation (\ref{eq:FIevidence}) hol
 
 \pmr{The Bayes' theorem is given by
 \begin{equation} \label{eqn: Bayes' Theorem}
-    p(\btheta |\ybold) = \frac{L(\btheta|\ybold)\pi(\btheta)}{c} = 
+    p(\btheta |\ybold) = \frac{L(\btheta|\ybold)\pi(\btheta)}{c} =
     \frac{q(\btheta)}{c},
 \end{equation}
 where $\btheta \in \Theta$ denote the parameter vector, $\ybold$ the data, $L(\btheta|\ybold)$ the likelihood function, $\pi(\btheta)$ the prior density, assumed to be proper, i.e., $\int_\theta \pi(\btheta) d\btheta = 1$, $p(\btheta |\ybold)$ the posterior density, and where
@@ -324,7 +306,7 @@ where $\btheta \in \Theta$ denote the parameter vector, $\ybold$ the data, $L(\b
 \end{equation}
 is the kernel of the posterior distribution, and
 \begin{equation} \label{eqn: marginal likelihood}
-    c = \int_\Theta L(\btheta|\ybold) \pi(\btheta) d\btheta 
+    c = \int_\Theta L(\btheta|\ybold) \pi(\btheta) d\btheta
 \end{equation}
 is the marginal likelihood that quantifies the probability (density) of the appearance of the data that we observe.}
 
@@ -332,10 +314,10 @@ is the marginal likelihood that quantifies the probability (density) of the appe
 
 %Let the prior distribution $\pi(\btheta)$ be proper such that it is integrable and $\displaystyle \int_\Omega \pi(\btheta) d\btheta = 1$. Let $\ybold$ be the data being observed. Let $\btheta$ denote the parameter (vector) indexing the densities that can be expressed as (joint) likelihood functions, which have an unbounded support $\Omega$. Then for the prior distribution, likelihood function $L(\btheta|\ybold)$ and the posterior distribution $\pi(\btheta|\ybold)$, Bayes' Theorem says
 %\begin{equation} \label{eqn: Bayes' Theorem}
-%    \pi(\btheta|\ybold) = \frac{\pi(\btheta)L(\btheta|\ybold)}{p(\ybold)} = 
+%    \pi(\btheta|\ybold) = \frac{\pi(\btheta)L(\btheta|\ybold)}{p(\ybold)} =
 %    \frac{q(\btheta)}{\int_\Omega q(\btheta) d\btheta},
 %\end{equation}
-%where 
+%where
 %\begin{equation} \label{eqn: posterior kernel q}
 %    q(\btheta) := \pi(\btheta)L(\btheta|\ybold)
 %\end{equation}
@@ -354,14 +336,14 @@ Suppose we are able to evaluate the posterior density at a pre-chosen point $\ma
 %\begin{equation} \label{eqn: re-arranged Bayes' Theorem for FI method}
 %    c = p(\ybold) = \frac{\pi(\xbold)L(\xbold | \ybold)}{\pi(\xbold | \ybold)},
 %\end{equation}
-%where $\xbold$ is a vector with a single value for each dimension of the parameter space. 
+%where $\xbold$ is a vector with a single value for each dimension of the parameter space.
 
 % Note that, to clarify the difference between any arbitrary points in the parameter space $\theta$ and the specific pre-chosen point for the purpose of Fourier integral method, we denote the former by $\btheta$ and the later by $\xbold$. In addition, the parameter space is usually explored by the posterior sample, so the posterior sample is denoted by $\btheta^{(i)}$. In practice, $\btheta$ and $\xbold$ have different sources - $\btheta^{(i)}$ come from sampling from the posterior kernel function, whereas $\xbold$ comes from the researchers' minds, and that $\xbold$ will only have this meaning throughout this dissertation. Although both of them live in the same parameter space, it is important to bear the difference between $\btheta$ and $\xbold$ in mind, otherwise the final Fourier integral estimator can be very confusing. In practice, $\xbold$ is usually chosen to be the most convenient point for computation purposes, which could be $\mathbf{0}$ or the posterior mean. As discussed in \cite{chib1995marginal} and \cite{chib2001marginal}, points with higher density values should be more efficient in terms of density estimation.
 
 \pmr{Equation \eqref{eqn: re-arranged Bayes' Theorem for FI method} converts the problem of estimating the marginal likelihood, i.e., a multidimensional integral calculation, into estimating the posterior density at one point in the parameter space. The remaining problem is how to evaluate the posterior density when only an un-normalised posterior kernel is known. \cite{rotiroti2022computing} proposed a simple method that uses the well-known Fourier transform.}
 
 \pmr{To clarify the difference between any arbitrary points in the parameter space $\theta$ and the specific pre-chosen point for the purpose of Fourier integral method, we denote the former by $\btheta$ and the later by $\xbold$. Note that $\xbold$ is a vector with a single value for each dimension of the parameter space arbitrarily defined. It has been suggested that $\btheta$ with higher density values should be more efficient in terms of density estimation \citep{chib1995marginal, chib2001marginal}, making the posterior mean a popular choice.}
-% In the following, $\btheta^{(i)}$ stand for the $i$th posterior sample.  In practice, $\btheta$ and $\xbold$ have different sources - $\btheta^{(i)}$ come from sampling from the posterior kernel function, whereas $\xbold$ is arbitrarily defined.  
+% In the following, $\btheta^{(i)}$ stand for the $i$th posterior sample.  In practice, $\btheta$ and $\xbold$ have different sources - $\btheta^{(i)}$ come from sampling from the posterior kernel function, whereas $\xbold$ is arbitrarily defined.
 
 
 %Equation \eqref{eqn: re-arranged Bayes' Theorem for FI method} converts the problem of estimating marginal likelihoods (integrals) into estimating the posterior density at one point (no integration needed). The remaining problem is how to evaluate the posterior density when only an un-normalised posterior kernel is known. \cite{rotiroti2022computing} proposed a simple method that uses the well-known Fourier transform.
@@ -433,7 +415,7 @@ The mathematical details of equations \eqref{eqn: FI Exp asymptotic} and \eqref{
 \end{equation}
 so the bias in $\hat{p}_n(x)$ can be much larger than order $\frac{1}{R}$ when the parameter $\lambda$ is large enough. Here we propose a solution that uses change-of-variable technique on equation \eqref{eqn: re-arranged Bayes' Theorem for FI method}.
 \begin{lemma} \label{lemma: FI transforming the re-arranged Bayes theorem}
-    Suppose $g: x \mapsto \check{x} \in \R$ is an invertible transformation of parameter $x$. Let $q$ denote the posterior kernel function defined by equation \eqref{eqn: posterior kernel q}. Then 
+    Suppose $g: x \mapsto \check{x} \in \R$ is an invertible transformation of parameter $x$. Let $q$ denote the posterior kernel function defined by equation \eqref{eqn: posterior kernel q}. Then
     \begin{equation*}
         c = \frac{q_{\check{x}}(\check{x}|\ybold)}{\pi_{\check{x}}(\check{x}|\ybold)}.
     \end{equation*}
@@ -459,7 +441,7 @@ One highlight of FI is that it considers the sine function as the kernel of dens
 \begin{equation} \label{eqn: general integral theorem estimator}
     \hat{p}_R(\mathbf{x}) = \frac{1}{n\pi^d}\sum_{i = 1}^n \prod_{j = 1}^d \frac{\phi(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}},
 \end{equation}
-the kernel $\phi$ only needs to be a cyclic function over the interval $(0, 2\pi)$, such that it integrates to 0 over $(0, 2\pi)$. Examples of integral theorems in \cite{ho2021integral} include the Haar wavelet integral theorem and Spline integral theorem, where each of them correspond to a unique density estimator, in a similar form of equations \eqref{eqn: univariate Fourier integral density estimator} and \eqref{eqn: multivariate Fourier integral density estimator}. Nevertheless, \cite{ho2021integral} showed that 
+the kernel $\phi$ only needs to be a cyclic function over the interval $(0, 2\pi)$, such that it integrates to 0 over $(0, 2\pi)$. Examples of integral theorems in \cite{ho2021integral} include the Haar wavelet integral theorem and Spline integral theorem, where each of them correspond to a unique density estimator, in a similar form of equations \eqref{eqn: univariate Fourier integral density estimator} and \eqref{eqn: multivariate Fourier integral density estimator}. Nevertheless, \cite{ho2021integral} showed that
 \begin{equation} \label{eqn: optimal cyclic kernel (sine)}
     \phi(x) = \frac{\sin(x)}{\pi}
 \end{equation}
@@ -470,7 +452,7 @@ is the optimal cyclic and almost everywhere differentiable kernel, such that it 
 As a result, \cite{ho2021integral} provides a method of generalizing FI.
 
 However, considering different integral theorems is not the only way of generalizing FI. Considering how the integrals approach infinity will generalize FI in another way, yielding some well-known KDEs. Note that equation \eqref{eqn: univariate Fourier integral} can be reexpressed as
-\begin{align*} 
+\begin{align*}
     p(x) & = \frac{1}{2\pi} \lim_{R \to \infty} \int_{-\infty}^\infty \int_{-R}^R \cos[s(x-\theta)]ds p(\theta)d\theta \\
     & = \frac{1}{2\pi} \lim_{R \to \infty} \int_{-\infty}^\infty \int_{-\infty}^\infty \\
     & \hspace{1cm}\cos[s(x-\theta)] \mathbbm{1}[-R < s < R] ds p(\theta) d\theta \\
@@ -525,7 +507,7 @@ In comparison, Gaussian KDE has the form
 Therefore, by comparing equations \eqref{eqn: normal window FI} and \eqref{eqn: Gaussian KDE}, one can see that Gaussian KDE is identical to the integral-window-generalized FI estimator when $2\tau = h^2$, so we have derived KDE from FI. A similar result holds for the Cauchy-kernel KDE by investigating equation \eqref{eqn: Cauchy window FI}. This leads to the following result:
 
 \begin{corollary}
-Fourier integral estimator is a special case of kernel density estimator.    
+Fourier integral estimator is a special case of kernel density estimator.
 \end{corollary}
 
 However, as claimed in section \ref{subsec:FI bias and variance} and in \cite{rotiroti2022computing}, FI is superior to ordinary KDE in many cases. On the other hand, estimators \eqref{eqn: triangular kernel window FI} and \eqref{eqn: Epanechnikov kernel window FI} follow the form of equation \eqref{eqn: general integral theorem estimator}, so they follow the result \cite{ho2021integral} that they are not as efficient as the sine kernel.
@@ -570,7 +552,7 @@ As in \cite{bhatia2005fourier}, by Jordan's theorem, if $p$ is continuous and of
 
 One drawback of the sine (more generally, Dirichlet) kernel used in FI is that it may produce negative density estimates. This issue is usually more severe for parameter spaces with higher dimensions. Namely, $\sin(R(x - \theta^{(i)}))$ and $x - \theta^{(i)}$ can have opposite signs. For one specific observation $i$, if the total number of negative $\displaystyle \frac{\sin(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}$ is odd, then $\displaystyle \prod_{j = 1}^d \frac{\sin(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}$ will be negative. If the total magnitude of such negative values exceed the total magnitude of positive values out of the same quantity, then equation \eqref{eqn: multivariate Fourier integral density estimator} is negative. For each dimension $j$ of each observation $i$, it is very easy to calculate which $R$ values can give positive $\displaystyle \frac{\sin(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}$ analytically. When there is a second dimension for this observation $i$, the region for $R$ that gives positive $\displaystyle \prod_{j = 1}^2 \frac{\sin(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}$ is the union of where the fraction is positive for both dimensions, and where the fraction is negative for both dimensions. When the number of dimensions $d$ is large, it is not hard to have some combinations of dimensions that have the opposite region of $R$ to where $\displaystyle \prod_{j = 1}^d \frac{\sin(R(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}$ is positive. Thus, as $d \to \infty$, it can be impossible to pick good $R$ values that can make equation \eqref{eqn: multivariate Fourier integral density estimator} non-negative. One solution is to use $R_j$ for each dimension $j$ as described in \cite{rotiroti2022computing}, but it can be hard to specify too many $R_j$ when the number of dimensions is too large. An alternative is to investigate which region of $R$ will give a positive $\sin(R(x_j - \theta_j^{(i)}))$, which restricts the selection of $R$, hence it imposes limitations on how unbiased the FI estimator can be. Here, we propose a third option: to come up with a more comprehensive estimator based on FI that will never produce negative density estimates.
 
-The key is to realise that there were no conditions on $R$ that require it to be positive when deriving the FI estimator using equation \eqref{eqn: univariate Fourier integral}. As a consequence, one could consider the case where $R \to -\infty$ in estimators \eqref{eqn: univariate Fourier integral density estimator} and \eqref{eqn: multivariate Fourier integral density estimator}. The mathematical support of this idea is given as follows: \cite{ho2021integral} stated that the kernel $\phi$ only needs to be a cyclic function over $(0, 2\pi)$ that integrates to 0 over $(0, 2\pi)$. Consequently, the kernel 
+The key is to realise that there were no conditions on $R$ that require it to be positive when deriving the FI estimator using equation \eqref{eqn: univariate Fourier integral}. As a consequence, one could consider the case where $R \to -\infty$ in estimators \eqref{eqn: univariate Fourier integral density estimator} and \eqref{eqn: multivariate Fourier integral density estimator}. The mathematical support of this idea is given as follows: \cite{ho2021integral} stated that the kernel $\phi$ only needs to be a cyclic function over $(0, 2\pi)$ that integrates to 0 over $(0, 2\pi)$. Consequently, the kernel
 \begin{equation} \label{eqn: optimal cyclic kernel (negative sine)}
     \phi(x) = \frac{-\sin(x)}{\pi} \left(= \frac{\sin(-x)}{\pi}\right)
 \end{equation}
@@ -578,7 +560,7 @@ is valid to be part of the density estimator \eqref{eqn: general integral theore
 
 It is trivial to show that the negative sine kernel, equation \eqref{eqn: optimal cyclic kernel (negative sine)}, has the same mean integrated square error as the sine kernel, equation \eqref{eqn: optimal cyclic kernel (sine)}. Therefore, not only the sine kernel is the optimal cyclic and almost everywhere differentiable kernel that minimizes equation \eqref{eqn: mean integrated square error}, but the negative sine kernel also does so.
 
-Next, we investigate the estimator corresponds to the negative sine kernel, equation 
+Next, we investigate the estimator corresponds to the negative sine kernel, equation
 \eqref{eqn: optimal cyclic kernel (negative sine)}. Replacing the estimating equation \eqref{eqn: multivariate Fourier integral} by
 %\begin{equation} \label{eqn: negative univariate Fourier integral}
 %    p(x) = -\frac{1}{\pi} \lim_{R \to \infty} \int_{-\infty}^\infty \frac{\sin[R(x-\theta)]}{x-\theta}p(\theta)d\theta
@@ -598,7 +580,7 @@ we can derive the negative Fourier integral (nFI) density estimator
 It is trivial that nFI will be positive if and only if FI is negative. Thus, without loss of consistency, when FI gives negative density estimates at limiting factor $R=r$, we can simply take the nFI estimates of limiting factor $r$, which is positive at $r$. Therefore, we can combine nFI and FI into a more comprehensive Fourier integral estimator, which is known as the absolute Fourier integral (aFI) estimator, and it always gives positive density estimates:
 \begin{definition}
     The absolute Fourier integral density estimator is given by
-    %\begin{equation*} 
+    %\begin{equation*}
      %   \hat{p}_\text{nFI}(x) = \bigg|\frac{1}{n\pi}\sum_{i = 1}^n \frac{\sin(R(x - \theta^{(i)}))}{x - \theta^{(i)}}\bigg|
     %\end{equation*}
     %and
@@ -629,18 +611,10 @@ Now define $\displaystyle g(\theta) := \frac{p(\theta) - p(0)}{\theta}$ and $\di
 and so on. Consequently, if $p$ is infinitely differentiable and integrable, then the order of bias of $\hat{p}_n(\mathbf{x})$ can be reduced to $e^{-\frac{R^2}{2}}$, presented in theorem 1 of \cite{rotiroti2022computing}.
 
 On the other hand, for a kernel density estimator (KDE) with bandwidth $h$, the bias will be of order $h^2$, and the variance will be of order $\frac{1}{nh}$. Consider the limiting constant $R$ as the `inverse bandwidth parameter'; that is, $R = \frac{1}{h}$. Then we can see that KDE has the same variance as FI, which is $\frac{R}{n}$. However, the bias of FI can be much smaller than that of KDE ($\frac{1}{R^2}$) when the target density is Gaussian-like, as discussed in \cite{rotiroti2022computing}.
-  
+
 In multivariate scenarios, however, the bias of (absolute) FI do not necessarily decrease as fast as the univariate scenarios when $R \to \infty$. As claimed in \cite{rotiroti2022computing}, for univariate Gaussian densities, the bias will be reduced with an order $e^{\frac{-R^2}{2}} < \frac{1}{R}$. This result can not be generalised for multivariate Gaussian densities due to the following proposition.
 
-\begin{proposition} \label{prop: FI Gaussian bias}
-    With a sample from $d$-dimensional Gaussian density with mean $\mathbf{0}$, independent marginal distributions and variance vector $\boldsymbol{\sigma} = (\sigma_1, \sigma_2, \ldots, \sigma_d)$, the average bias of absolute FI density estimator on a is evaluated at $\mathbf{0}$, is 
-    \begin{equation} \label{eqn: FI multivariate Gaussian bias}
-        \text{bias}(\hat{p}_\text{aFI}(\mathbf{0})) \le \prod_{j=1}^d \frac{1}{\sqrt{2\pi}\sigma_j}\left\{\erf\left[\frac{R_j \sqrt{2}\sigma_j}{2} \right]-1 \right\} \le 0.
-    \end{equation}
-    That is, the bias is negative, and the magnitude of the bias is at least $\displaystyle \prod_{j=1}^d \frac{1}{\sqrt{2\pi}\sigma_j}\left\{\erf\left[\frac{R_j \sqrt{2}\sigma_j}{2} \right]-1 \right\}$.
-\end{proposition}
-A proof of proposition \ref{prop: FI Gaussian bias} can be found in the Appendix. Note that equation \eqref{eqn: FI multivariate Gaussian bias} does not depend on the sample size $n$. In equation \eqref{eqn: FI multivariate Gaussian bias}, a small $\sigma_j$ acquires a large $R_j$ for the bias to go down to 0; and as $d$ gets larger, the bias that are greater than one on different dimensions will accumulate. This imposes the necessity to standardize the high-dimensional posterior sample before applying FI.
- 
+
 
 
 
@@ -674,15 +648,15 @@ A proof of proposition \ref{prop: FI Gaussian bias} can be found in the Appendix
 \avi{Describe the sampler}
 
 
-\begin{figure}
-    \centering
-    \includegraphics[width=0.5\linewidth]{pictures/GW150914.png}
-    \caption{Enter Caption}
-    \label{fig:enter-label}
+\begin{figure}[h]
+\caption{A comparison of the FI, NS and SS $\ln \mathcal{L}$ using GW150914 data: The box plot displays the FI... The horizontal orange and green bars show the NS and SS... }
+\centering
+\includegraphics[width=0.3\textwidth]{pictures/GW150914.png}
 \end{figure}
 
 \subsection{\label{subsec:LISA} Simulated LISA SGWB}
 
+Need Jason's plot here.
 
 
 
@@ -750,7 +724,7 @@ Next, we need to show that $\lambda \arctan\left(\frac{R}{\lambda} \right) \sim 
 \end{equation*}
 See, for example, section 2 in \cite{nimbran2015taylor}. Also, we note that $\displaystyle \frac{R}{\lambda} \in [0, 1)$ as $\lambda \to \infty$. This gives, $\displaystyle \forall \left(\frac{R}{\lambda}\right) \in (-1, 1)$,
 \begin{align*}
-    & \arctan\left(\frac{R}{\lambda} \right) 
+    & \arctan\left(\frac{R}{\lambda} \right)
     = \frac{R}{\lambda} - \frac{1}{3}\left[\frac{R}{\lambda} \right] + \mathcal{O}\left[\left(\frac{R}{\lambda} \right)^5 \right] \\
     \implies & \lambda \arctan\left(\frac{R}{\lambda} \right) = \lambda \frac{R}{\lambda} + \lambda \mathcal{O}\left[\left(\frac{R}{\lambda} \right)^3 \right] \sim \lambda \frac{R}{\lambda} = R.
 \end{align*}
@@ -765,7 +739,7 @@ See, for example, section 2 in \cite{nimbran2015taylor}. Also, we note that $\di
     \begin{align*}
         & \int_0^\infty \frac{\sin(R\theta)}{\theta} d\theta
         = \int_0^\infty \frac{\sin(\chi)}{\frac{\chi}{R}} \bigg|\frac{d\theta}{d\chi}\bigg| d\chi \\
-        = & R \int_0^\infty \frac{\sin(\chi)}{\chi} \bigg|\frac{1}{R}\bigg| d\chi 
+        = & R \int_0^\infty \frac{\sin(\chi)}{\chi} \bigg|\frac{1}{R}\bigg| d\chi
         =: \text{Si}(\infty).
     \end{align*}
     Note that this sine integral function at infinity is also known as Dirichlet integral.
@@ -894,14 +868,14 @@ See, for example, section 2 in \cite{nimbran2015taylor}. Also, we note that $\di
     \begin{equation*}
         m_1(\xbold) = a(\xbold)\mathbbm{1}[a(\xbold) \ge 0] + b(\xbold) \mathbbm{1}[a(\xbold) < 0].
     \end{equation*}
-    Hence, on the set $I$, 
+    Hence, on the set $I$,
     \begin{align*}
         & m_1(\xbold)\mathbbm{1}[\xbold \in I] = m_1(\xbold)\mathbbm{1}[a(\xbold) \ge 0] \\
         = & [a(\xbold)\mathbbm{1}[a(\xbold) \ge 0] + b(\xbold) \mathbbm{1}[a(\xbold) < 0]]\mathbbm{1}[a(\xbold) \ge 0] \\
         = & a(\xbold)\mathbbm{1}[a(\xbold) \ge 0] = a(\xbold)\mathbbm{1}[\xbold \in I]
     \end{align*}
 
-    Then we consider $m_2(\xbold)$. For any integrable function $k$, define $k^+(x) := |k(x)|\mathbbm{1}[k(x) \ge 0]$ and $k^-(x) := |k(x)|\mathbbm{1}[k(x) < 0]$. Then one can derive $k(x) = k^+(x) - k^-(x)$ and $|k(x)| = k^+(x) + k^-(x)$. Define 
+    Then we consider $m_2(\xbold)$. For any integrable function $k$, define $k^+(x) := |k(x)|\mathbbm{1}[k(x) \ge 0]$ and $k^-(x) := |k(x)|\mathbbm{1}[k(x) < 0]$. Then one can derive $k(x) = k^+(x) - k^-(x)$ and $|k(x)| = k^+(x) + k^-(x)$. Define
     \begin{equation*}
         r(\xbold, \btheta) := \prod_{j = 1}^d \frac{\sin(R_j(x_j - \theta_j))}{x_j - \theta_j} p(\btheta).
     \end{equation*}
@@ -919,7 +893,7 @@ Therefore, $m_1(\xbold)$ should be the estimating equation, not $m_2(\xbold)$.
 \subsection{Proof of proposition \ref{prop: FI Gaussian bias}}
 \begin{proof}
     First, we denote the absolute FI estimator based on one observation to be $\hat{p}_{\text{1}}$, and the absolute FI estimator based on a sample of size $n$ to be $\hat{p}_{n}$.
-    
+
     Let the precision parameter be $s_j := := \frac{1}{2\sigma_j^2}$, and set $u_j := \theta_j^2$, hence $du_j = 2\sqrt{u}d\theta_j$. Then the FI estimator of density based on a single Gaussian$(\mathbf{0},
     \boldsymbol{\sigma})$ observation is given by
     \begin{align*}
@@ -939,7 +913,7 @@ Therefore, $m_1(\xbold)$ should be the estimating equation, not $m_2(\xbold)$.
     & \le \frac{1}{n\pi^d}\sum_{i = 1}^n \bigg|\prod_{j = 1}^d \frac{\sin(R_j(x_j - \theta_j^{(i)}))}{x_j - \theta_j^{(i)}}\bigg|\\
     & = \frac{\sum_{i=1}^n\hat{p}_{\text{1}}(\mathbf{x})}{n},
     \end{align*}
-    hence 
+    hence
     $$
     \E[\hat{p}_{n}(\mathbf{x})] \le \E\left[\frac{\sum_{i=1}^n\hat{p}_{\text{1}}(\mathbf{x})}{n}\right] = \E[\hat{p}_{\text{FI}1}(\mathbf{x})].
     $$
@@ -959,8 +933,9 @@ Therefore, $m_1(\xbold)$ should be the estimating equation, not $m_2(\xbold)$.
 % most likely will not want to use it.
 %\nocite{*}
 
-\bibliography{apssamp}% Produces the bibliography via BibTeX.
+\bibliography{my_bib}% Produces the bibliography via BibTeX.
 
 \end{document}
 %
 % ****** End of file apssamp.tex ******
+
