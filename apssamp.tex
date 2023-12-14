@@ -161,6 +161,45 @@ Abstract: a super fast method
 %\tableofcontents
 
 \section{\label{sec:introduction} Introduction}
+On September 14, 2015, the Laser Interferometer Gravitational-Wave Observatory (LIGO) directly detected gravitational waves for the very first time. These waves were emitted by the inspiral and merger of two solar mass black holes. For this spectacular discovery, the founders of LIGO, Barry Barish, Kip Thorne and Rainer Weiss were awarded the Nobel Prize in Physics in 2017.  Since then, the collaborations of the American LIGO detectors and the European Virgo detector have announced a total of 90 detections of gravitational waves (GWs) emitted by merging compact objects. LIGO, Virgo, and the Japanese KAGRA detector started another observation run in May 2023 which will last for 18 months and observe in the 20Hz to 2 kHz frequency range. The GWs observed to date stem from the mergers of solar-mass binary black holes and/or neutron stars but GWs from core-collapse supernovae and rapidly rotating neutron stars are potential sources that emit GWs in the frequency band of LIGO/Virgo/KAGRA (LVK).
+Further  ground-based interferometers with increased sensitivity, the Einstein Telescope in Europe and Cosmic Explorer in the US, are in the planning stages and should start observing in the mid 2030s. The Laser Interferometer Space Antenna or short LISA, a space mission led by the European Space Agency with support from NASA, and the Chinese space mission Tianji will observe in the mHz band from 2035 and will be sensitive to emissions from supermassive black holes, massive compact objects orbiting a supermassive black hole and the stochastic gravitational wave background from physical processes in the very early Universe.
+
+To fully exploit the current and future observations and derive important information about the physics of the emitting sources, state-of-the-art statistical inference techniques are essential. To claim a detection with confidence requires a careful consideration of the evidence of the model with gravitational wave signal present as compared to a model with just instrumental noise. Furthermore, the observations of gravitational waves by terrestrial detectors now and by future space-based detectors present possibilities to put general relativity to the test. These require a methodology for statistical hypothesis tests or model comparison, e.g.\ testing the null hypothesis ``$H_0: M_0\mbox{ holds}$" against the alternative ``$H_1: M_1 \mbox{ holds}$".  Using a frequentist approach, hypothesis testing is done by
+choosing a test statistic and calculating the so-called 
+p-value, the probability to reject the null hypothesis even if $M_0$ is true, see e.g.\ \cite{alma9998701914002091}. The p-value is usually regarded as an {\em indirect} measure of
+the evidence against a null hypothesis (in favour of $M_1$) and often compared to the significance level of 5\%, i.e., if the p-value is larger 
+than 0.05, there is deemed to be insufficient evidence against the null hypothesis. However, the p-value cannot be interpreted (as often falsely done) as the probability that the null hypothesis is true. The p-value does not have this {\em direct} interpretation as a measure of evidence. This is only possible using a Bayesian approach by calculating the {\em evidence} for each model (insert citation), i.e., the marginal likelihood of the data $\ybold$ under model $M_i$, \[Z(M_i)=\pi(\ybold|M_i)=\int \pi(\btheta
+_i|M_i)L(\ybold|\btheta_i,M_i)d\btheta_i.\]
+This is the prior-weighted average of the likelihood of the data $\ybold$ given all potential parameter values $\btheta_i$ of Model $M_i$. 
+If the Bayes factor, defined as the ratio of the evidences,
+\[ B_{01}=\frac{\pi(\ybold|M_0)}{\pi(\ybold|M_1)},\]
+is larger than 1, this provides evidence in favour of $M_0$. Since $\pi(\ybold|M_i)=\pi(M_i|\ybold)\pi(M_i)$,
+the Bayes factor can also be interpreted as the ratio of the posterior odds for model $M_0$, $\pi(\ybold|M_0)$, to the prior odds, $\pi(M_0)$. 
+
+However, apart from conjugate and low-dimensional cases, it is notoriously difficult to compute the marginal likelihood since it requires the solution of a high-dimensional integration problem.
+
+A comprehensive overview of computational techniques for computing the marginal likelihood can be found in 
+\cite{RobertCP2009CmfB, GelmanAndrew2014, ChristensenNelson2022Pewg}.
+Currently, the most widely-accepted methods for computing marginal likelihoods for gravitational wave data are nested sampling (NS) \cite{skilling2006nested, veitch2010bayesian}, thermodynamic integration (TI) \cite{gelman1998simulating, lartillot2006computing} and stepping-stone algorithm (SS) \cite{xie2011improving, maturana2019stepping}. These algorithms have been and are currently routinely used for LVK data analysis. All these use Monte Carlo samples from each model to estimate the evidence. A different approach is the transdimensional reversible jump Markov chain Monte Carlo method \cite{green1995reversible, umstatter2005bayesian} that explores the joint space of all models at once, and ratios of marginal likelihoods can be computed based on the proportions of the number of iterations that the algorithm stays in each model. 
+To circumvent the highdimensional integration, information criteria are often used for model comparison.
+Under certain regularity conditions, an approximation to $-2\log Z$ is given by the frequentist Bayesian information criterion (BIC), defined as $\mbox{BIC}=-2\log L(\ybold|\hat{\btheta}) +p\log n$,
+where $\hat{\btheta}$ denotes the maximum likelihood estimate, $p$ the number of parameters, and $n$ the sample size. This combines a measure of fit, the deviance $D(\btheta)= -2\log L(\ybold|\btheta)$ evaluated at the maximum likelihood estimate, with a penalty term for model complexity. A Bayesian version, the deviance information criterion (DIC, \cite{spiegelhalter2002bayesian}) uses 
+\[\mbox{DIC}=\bar{D}(\btheta) +p_D \]
+with the posterior mean of the deviance $\bar{D}(\btheta)$  as the measure of fit and $p_D=\bar{D}(\theta)-D(\bar{\btheta})$ as the penalty term, where $\bar{\btheta}$ is the posterior mean of $\btheta$. The main advantages of using the DIC for model comparison is that it is easy to compute when a sample of the posterior distribution is available and that it can be used even if improper priors are specified. In contrast, Bayes factors cannot be interpreted if improper priors are used.
+
+
+Here we propose the use of the Fourier integral method (FI) for computing the evidence of  gravitational wave models, as introduced by \cite{rotiroti2022computing}. It falls in the same category as nested sampling, the TI and SS algorithms in that no trans-dimensional moves are made nor information criteria used.  
+We aim to assess the accuracy and computational effort of the FI method in relation to these currently utilized techniques for computing the Bayes factor. This evaluation specifically focuses on LVK observations, with the goal of determining the evidence supporting the existence of a gravitational wave signal originating from a binary coalescence in LVK measurements. 
+The DIC has been employed in prior studies to assess gravitational wave models with and without phase transition in the context of the stochastic gravitational wave background (SGWB) based on simulated LISA observations \cite{BoileauGuillaume2023PfLt}. To demonstrate the comparative effectiveness of model comparison using the FI method in contrast to the DIC, we examine identical simulated data as presented in \cite{BoileauGuillaume2023PfLt}.
+
+Computing the evidence through the Fourier integral method differs from methods like parallel tempered techniques (TI or SS) or sampling from progressively restricted parameter spaces like NS. The process does not necessitate these complexities. As long as there is knowledge of the prior and likelihood, along with a sample from the posterior distribution obtained, for instance, through a Metropolis-Hastings algorithm, implementing the Fourier integral method is notably straightforward and convenient. As far as the computation time is concerned,  the Fourier integral method is much faster than NS, TI and SS.  It is even  surpasses the computational speed of calculating the DIC. {\em What about accuracy?} As a consequence,
+FI provides an accurate and fast alternative to current techniques and even compares favourably in terms of computation time to the calculation of information criteria.
+
+The paper is structured as follows.... (delete the rest)
+
+\bigskip
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 Gravitational wave (GW) detection is a recent field in observational-based astronomy, which are waves of the gravitational field generated by perturbations of large masses in the universe. Ground-based detectors of gravitational waves include Laser Interferometer Gravitational-Wave Observatory (LIGO), Virgo interferometer and Kamioka Gravitational Wave Detector (KAGRA). However, GWs are detected by changes in distances between two points in the space-time, where such changes have tiny magnitudes on Earth. As a result, the LIGO-Virgo-KAGRA collaboration (LVK) is essential to increase the sensitivity and confidence of any GW signal detection. 
 
 Ground-based detectors can be spacious and prone to false signals due to human activities on the ground. The Laser Interferometer Space Antenna (LISA) will be a GW detector that will be sent into space, making it have high sensitivity to the millihertz GW frequency range. As stated in \cite{boileau2023prospects}, LISA will receive signals from various astronomical and cosmological sources.
@@ -476,6 +515,14 @@ A proof of this remark is given in the appendix.
 \section{\label{sec:simulation study} Simulation study}
 
 \section{\label{sec:LIGO} LIGO merger}
+
+\begin{figure}[h]
+\caption{A comparison of the FI, NS and SS $\ln \mathcal{L}$ using GW150914 data: The box plot displays the FI... The horizontal orange and green bars show the NS and SS... }
+\centering
+\includegraphics[width=0.3\textwidth]{pictures/GW150914.png}
+\end{figure}
+
+
 
 \section{\label{sec:LISA} Simulated LISA SGWB}
 
